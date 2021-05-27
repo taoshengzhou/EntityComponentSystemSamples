@@ -14,6 +14,13 @@ namespace Samples.Boids
     // a unique index (generally to the relevant data in some other collection).
     // 2) Each bucket is processed concurrently with other buckets.
     // 3) All key/value pairs in each bucket are processed individually (in sequential order) by a single thread.
+    
+    // 分两步执行
+    // ExecuteFirst：每个key的第一个数据
+    // ExecuteNext：每个key后续数据
+    //          ExecuteFirst(5)
+    //          ExecuteNext(5, 9)
+    //          ExecuteNext(5, 22)
     [JobProducerType(typeof(JobNativeMultiHashMapUniqueHashExtensions.JobNativeMultiHashMapMergedSharedKeyIndicesProducer<>))]
     public interface IJobNativeMultiHashMapMergedSharedKeyIndices
     {

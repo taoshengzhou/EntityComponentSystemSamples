@@ -31,7 +31,7 @@ namespace Samples.Boids
         List<Boid>   m_UniqueTypes = new List<Boid>(3);
 
         // This accumulates the `positions` (separations) and `headings` (alignments) of all the boids in each cell to:
-        // 1) count the number of boids in each cell
+        // 1) count the number of boids in each cell`
         // 2) find the nearest obstacle and target to each boid cell
         // 3) track which array entry contains the accumulated values for each boid's cell
         // In this context, the cell represents the hashed bucket of boids that are near one another within cellRadius
@@ -131,13 +131,21 @@ namespace Samples.Boids
                 // note: working with a sparse grid and not a dense bounded grid so there
                 // are no predefined borders of the space.
 
+                // cell中，每个分格，hash----entityInQueryIndex 的对应关系
                 var hashMap                   = new NativeMultiHashMap<int, int>(boidCount, Allocator.TempJob);
+                // cell中，每个boid 的 cell Index
                 var cellIndices               = new NativeArray<int>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+                // cell中，每个boid的最近障碍物的位置索引
                 var cellObstaclePositionIndex = new NativeArray<int>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+                // cell中，每个boid的目标位置索引（当有多个目标时，选择最近的一个）
                 var cellTargetPositionIndex   = new NativeArray<int>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+                // cell
                 var cellCount                 = new NativeArray<int>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+                // cell中，每个 boid 的最近障碍物的距离
                 var cellObstacleDistance      = new NativeArray<float>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+                // cell中，每个 boid 的前进方向（forward）
                 var cellAlignment             = new NativeArray<float3>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+                // cell中，每个 boid 的位置
                 var cellSeparation            = new NativeArray<float3>(boidCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
 
                 var copyTargetPositions       = new NativeArray<float3>(targetCount, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
@@ -194,6 +202,9 @@ namespace Samples.Boids
                 // This is useful in terms of the algorithm because it limits the number of comparisons that will
                 // actually occur between the different boids. Instead of for each boid, searching through all
                 // boids for those within a certain radius, this limits those by the hash-to-bucket simplification.
+                
+                // 生成 HashMap：每个 bucket 包含所有位于同一个半径范围内的 Boid 的 EntityInQueryIndex，用于 MergeCells（合并分格）和 Steer（引导）的 Job 中
+                // HashMap 生成 ParallelWriter（并行写入器），因为 Boid 中，每个 cell 都是并行的，可以充分利用 Job System 的优势，提升性能
                 var parallelHashMap = hashMap.AsParallelWriter();
                 var hashPositionsJobHandle = Entities
                     .WithName("HashPositionsJob")
