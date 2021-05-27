@@ -277,12 +277,14 @@ namespace Samples.Boids
                         // 1) alignment - how much should it move in a direction similar to those around it?
                         // note: we use `alignment/neighborCount`, because we need the average alignment in this case; however
                         // alignment is currently the summation of all those of the boids within the cellIndex being considered.
+                        // 带权重的朝向调整：移动到群体方向需要做的调整
                         var alignmentResult     = settings.AlignmentWeight
                             * math.normalizesafe((alignment / neighborCount) - forward);
                         // 2) separation - how close is it to other boids and are there too many or too few for comfort?
                         // note: here separation represents the summed possible center of the cell. We perform the multiplication
                         // so that both `currentPosition` and `separation` are weighted to represent the cell as a whole and not
                         // the current individual boid.
+                        // 带权重的位置调整：群体位置到当前位置的方向，群体对当前boid的斥力方向
                         var separationResult    = settings.SeparationWeight
                             * math.normalizesafe((currentPosition * neighborCount) - separation);
                         // 3) target - is it still towards its destination?
