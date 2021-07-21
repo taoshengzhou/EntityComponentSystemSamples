@@ -5,6 +5,17 @@
     "Components": [
         {
             "$type": "Unity.Scenes.Editor.Build.LiveLink, Unity.Scenes.Editor"
+        },
+        {
+            "$type": "Unity.Build.Common.SceneList, Unity.Build",
+            "$version": 1,
+            "BuildCurrentScene": true,
+            "SceneInfos": [
+                {
+                    "Scene": "GlobalObjectId_V1-1-a060c70e574164649b21f76743b282e2-102900000-0",
+                    "AutoLoad": true
+                }
+            ]
         }
     ]
 }
