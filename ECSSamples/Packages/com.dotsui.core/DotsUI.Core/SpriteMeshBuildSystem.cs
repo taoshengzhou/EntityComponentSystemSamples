@@ -31,14 +31,14 @@ namespace DotsUI.Core
         {
             //[ReadOnly] public NativeHashMap<int, SpriteVertexData> SpriteData;
             [ReadOnly] public ComponentDataFromEntity<SpriteVertexData> SpriteDataFromEntity;
-            public ArchetypeChunkBufferType<ControlVertexData> VertexDataType;
-            public ArchetypeChunkBufferType<ControlVertexIndex> VertexIndexType;
-            [ReadOnly] public ArchetypeChunkComponentType<SpriteImage> SpriteImageType;
-            [ReadOnly] public ArchetypeChunkComponentType<WorldSpaceRect> WorldSpaceRectType;
-            [ReadOnly] public ArchetypeChunkComponentType<WorldSpaceMask> WorldSpaceMaskType;
-            [ReadOnly] public ArchetypeChunkComponentType<VertexColorValue> ColorValueType;
-            [ReadOnly] public ArchetypeChunkComponentType<VertexColorMultiplier> ColorMultiplierType;
-            public ArchetypeChunkComponentType<RebuildElementMeshFlag> RebuildElementMeshFlagType;
+            public BufferTypeHandle<ControlVertexData> VertexDataType;
+            public BufferTypeHandle<ControlVertexIndex> VertexIndexType;
+            [ReadOnly] public ComponentTypeHandle<SpriteImage> SpriteImageType;
+            [ReadOnly] public ComponentTypeHandle<WorldSpaceRect> WorldSpaceRectType;
+            [ReadOnly] public ComponentTypeHandle<WorldSpaceMask> WorldSpaceMaskType;
+            [ReadOnly] public ComponentTypeHandle<VertexColorValue> ColorValueType;
+            [ReadOnly] public ComponentTypeHandle<VertexColorMultiplier> ColorMultiplierType;
+            public ComponentTypeHandle<RebuildElementMeshFlag> RebuildElementMeshFlagType;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {

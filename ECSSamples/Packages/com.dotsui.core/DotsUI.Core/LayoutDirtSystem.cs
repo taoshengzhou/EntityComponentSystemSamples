@@ -18,14 +18,14 @@ namespace DotsUI.Core
         //[BurstCompile]
         private struct MarkDirtyCanvases : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<DirtyElementFlag> DirtyElementType;
-            [ReadOnly] public ArchetypeChunkComponentType<UpdateElementColor> UpdateColorType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<DirtyElementFlag> DirtyElementType;
+            [ReadOnly] public ComponentTypeHandle<UpdateElementColor> UpdateColorType;
             [ReadOnly] public ComponentDataFromEntity<Parent> ParentFromEntity;
             [ReadOnly] public ComponentType DirtyElementComponent;
             [ReadOnly] public ComponentType UpdateColorComponent;
 
-            public EntityCommandBuffer.Concurrent CommandBuff;
+            public EntityCommandBuffer.ParallelWriter CommandBuff;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {
@@ -58,7 +58,7 @@ namespace DotsUI.Core
 
             public Entity GetRootRecursive(Entity entity)
             {
-                if (ParentFromEntity.Exists(entity))
+                if (ParentFromEntity.HasComponent(entity))
                     return GetRootRecursive(ParentFromEntity[entity].Value);
                 return entity;
             }
@@ -84,16 +84,16 @@ namespace DotsUI.Core
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            var entityCommandBuffer = m_Barrier.CreateCommandBuffer().ToConcurrent();
+            var entityCommandBuffer = m_Barrier.CreateCommandBuffer().AsParallelWriter();
             var dirtType = ComponentType.ReadOnly<DirtyElementFlag>();
             var parentFromEntity = GetComponentDataFromEntity<Parent>(true);
-            var entityType = GetArchetypeChunkEntityType();
+            var entityType = GetEntityTypeHandle();
             var job = new MarkDirtyCanvases()
             {
                 CommandBuff = entityCommandBuffer,
-                DirtyElementType = GetArchetypeChunkComponentType<DirtyElementFlag>(true),
+                DirtyElementType = GetComponentTypeHandle<DirtyElementFlag>(true),
                 DirtyElementComponent = dirtType,
-                UpdateColorType = GetArchetypeChunkComponentType<UpdateElementColor>(true),
+                UpdateColorType = GetComponentTypeHandle<UpdateElementColor>(true),
                 UpdateColorComponent = ComponentType.ReadOnly<UpdateElementColor>(),
                 ParentFromEntity = parentFromEntity,
                 EntityType = entityType
