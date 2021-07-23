@@ -1,5 +1,30 @@
 {
   "dependencies": {
+    "com.dotsui.core": {
+      "version": "file:com.dotsui.core",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.entities": "0.1.1-preview",
+        "com.unity.textmeshpro": "2.0.1"
+      }
+    },
+    "com.dotsui.hybrid": {
+      "version": "file:com.dotsui.hybrid",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.dotsui.core": "0.4.0"
+      }
+    },
+    "com.dotsui.hybrid-samples": {
+      "version": "file:com.dotsui.hybrid-samples",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.dotsui.hybrid": "0.4.0"
+      }
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -288,6 +313,15 @@
       "dependencies": {
         "com.unity.test-framework": "1.1.0",
         "com.unity.nuget.newtonsoft-json": "2.0.0-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "3.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
