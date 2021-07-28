@@ -24,7 +24,7 @@ namespace DotsUI.Core
         [BurstCompile(FloatMode = FloatMode.Fast)]
         private struct MeshBatching : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
+            [ReadOnly] public EntityTypeHandle EntityType;
             [NativeDisableParallelForRestriction] public ComponentDataFromEntity<ElementVertexPointerInMesh> VertexPointerFromEntity;
             [ReadOnly] public ComponentDataFromEntity<Disabled> DisabledFromEntity;
             [ReadOnly] public BufferFromEntity<Child> ChildFromEntity;
@@ -35,10 +35,10 @@ namespace DotsUI.Core
             [ReadOnly] public BufferFromEntity<ControlVertexIndex> TrianglesFromEntity;
 
             [NativeDisableContainerSafetyRestriction]
-            [WriteOnly] public ArchetypeChunkBufferType<MeshVertex> VertexType;
+            [WriteOnly] public BufferTypeHandle<MeshVertex> VertexType;
             [NativeDisableContainerSafetyRestriction]
-            [WriteOnly] public ArchetypeChunkBufferType<MeshVertexIndex> VertexIndexType;
-            [NativeDisableContainerSafetyRestriction] [WriteOnly] public ArchetypeChunkBufferType<SubMeshInfo> SubMeshList;
+            [WriteOnly] public BufferTypeHandle<MeshVertexIndex> VertexIndexType;
+            [NativeDisableContainerSafetyRestriction] [WriteOnly] public BufferTypeHandle<SubMeshInfo> SubMeshList;
 
 
             private int m_CurrentMaterialId;
@@ -63,15 +63,15 @@ namespace DotsUI.Core
             }
             private void GoDownRoot(Entity parent, ref DynamicBuffer<MeshVertex> vertices, ref DynamicBuffer<MeshVertexIndex> triangles, ref DynamicBuffer<SubMeshInfo> subMeshes)
             {
-                if (ChildFromEntity.Exists(parent))
+                if (ChildFromEntity.HasComponent(parent))
                 {
                     var childern = ChildFromEntity[parent];
                     for (int i = 0; i < childern.Length; i++)
                     {
                         var child = childern[i].Value;
-                        if (DisabledFromEntity.Exists(child))
+                        if (DisabledFromEntity.HasComponent(child))
                             continue;
-                        if (VerticesFromEntity.Exists(child) && TrianglesFromEntity.Exists(child))
+                        if (VerticesFromEntity.HasComponent(child) && TrianglesFromEntity.HasComponent(child))
                         {
                             PopulateMesh(child, ref vertices, ref triangles, ref subMeshes);
                         }
@@ -102,7 +102,7 @@ namespace DotsUI.Core
 
 
                 int startIndex = vertices.Length;
-                if(VertexPointerFromEntity.Exists(entity))
+                if(VertexPointerFromEntity.HasComponent(entity))
                     VertexPointerFromEntity[entity] = new ElementVertexPointerInMesh(){VertexPointer = startIndex};
                 Populate(entity, ref vertices, ref triangles, startIndex);
             }
@@ -182,17 +182,17 @@ namespace DotsUI.Core
             {
                 MeshBatching chunkJob = new MeshBatching()
                 {
-                    EntityType = GetArchetypeChunkEntityType(),
+                    EntityType =  GetEntityTypeHandle(),
                     ChildFromEntity = childFromEntity,
-                    SubMeshList = GetArchetypeChunkBufferType<SubMeshInfo>(),
+                    SubMeshList = GetBufferTypeHandle<SubMeshInfo>(),
                     EntityToMaterial = m_EntityToMaterialID,
                     VerticesFromEntity = verticesFromEntity,
                     TrianglesFromEntity = trianglesFromEntity,
                     VertexPointerFromEntity = GetComponentDataFromEntity<ElementVertexPointerInMesh>(),
                     DisabledFromEntity = GetComponentDataFromEntity<Disabled>(true),
 
-                    VertexType = GetArchetypeChunkBufferType<MeshVertex>(),
-                    VertexIndexType = GetArchetypeChunkBufferType<MeshVertexIndex>(),
+                    VertexType = GetBufferTypeHandle<MeshVertex>(),
+                    VertexIndexType = GetBufferTypeHandle<MeshVertexIndex>(),
                 };
 
                 inputDeps = chunkJob.Schedule(m_RootGroup, inputDeps);
@@ -207,9 +207,9 @@ namespace DotsUI.Core
             [ReadOnly] [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
             [ReadOnly] public ComponentDataFromEntity<SpriteVertexData> SpriteDataFromEntity;
             [ReadOnly] public ComponentDataFromEntity<TextFontAsset> FontAssetFromEntity;
-            [ReadOnly] public ArchetypeChunkEntityType Entities;
-            [ReadOnly] public ArchetypeChunkComponentType<SpriteImage> SpriteImageType;
-            [ReadOnly] public ArchetypeChunkComponentType<TextRenderer> TextRendererType;
+            [ReadOnly] public EntityTypeHandle Entities;
+            [ReadOnly] public ComponentTypeHandle<SpriteImage> SpriteImageType;
+            [ReadOnly] public ComponentTypeHandle<TextRenderer> TextRendererType;
             public NativeHashMap<Entity, MaterialInfo> NativeToSprite;
 
             public void Execute()
@@ -228,7 +228,7 @@ namespace DotsUI.Core
 
                         for (int j = 0; j < entityArray.Length; j++)
                         {
-                            if (SpriteDataFromEntity.Exists(spriteArray[j].Asset))
+                            if (SpriteDataFromEntity.HasComponent(spriteArray[j].Asset))
                                 materialId = SpriteDataFromEntity[spriteArray[j].Asset].NativeMaterialId;
                             else
                                 materialId = -1;
@@ -266,11 +266,11 @@ namespace DotsUI.Core
                 m_EntityToMaterialID.Clear();
 
                 var chunkArray = m_RendererGroup.CreateArchetypeChunkArray(Allocator.TempJob);
-                var entityType = GetArchetypeChunkEntityType();
-                var spriteType = GetArchetypeChunkComponentType<SpriteImage>();
-                var textType = GetArchetypeChunkComponentType<TextRenderer>();
+                var entityType = GetEntityTypeHandle();
+                var spriteType = GetComponentTypeHandle<SpriteImage>();
+                var textType = GetComponentTypeHandle<TextRenderer>();
                 var spriteDataFromEntity = GetComponentDataFromEntity<SpriteVertexData>();
-                //var textType = GetArchetypeChunkComponentType<TextRenderer>();
+                //var textType = GetComponentTypeHandle<TextRenderer>();
 
                 EntityToMaterialJob materialBatchJob = new EntityToMaterialJob()
                 {

@@ -54,8 +54,8 @@ namespace DotsUI.Input
                 inputDeps = clearContainer.Schedule(inputDeps);
                 CreateTargetToEventMap createMap = new CreateTargetToEventMap()
                 {
-                    EntityType = GetArchetypeChunkEntityType(),
-                    EventType = GetArchetypeChunkComponentType<PointerEvent>(true),
+                    EntityType = GetEntityTypeHandle(),
+                    EventType = GetComponentTypeHandle<PointerEvent>(true),
                     TargetToEvent = m_TargetToEvent.AsParallelWriter(),
                     TargetType = GetComponentDataFromEntity<T>(true)
                 };

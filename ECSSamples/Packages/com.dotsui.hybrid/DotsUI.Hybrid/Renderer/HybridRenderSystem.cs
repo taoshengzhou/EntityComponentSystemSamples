@@ -182,11 +182,11 @@ namespace DotsUI.Hybrid
                 var commandBufferType = GetArchetypeChunkSharedComponentType<CanvasCommandBufferContainer>();
                 var meshType = GetArchetypeChunkSharedComponentType<CanvasMeshContainer>();
 
-                var vertexBufferType = GetArchetypeChunkBufferType<MeshVertex>();
-                var vertexIndexBufferType = GetArchetypeChunkBufferType<MeshVertexIndex>();
-                var subMeshBufferType = GetArchetypeChunkBufferType<SubMeshInfo>();
+                var vertexBufferType = GetBufferTypeHandle<MeshVertex>();
+                var vertexIndexBufferType = GetBufferTypeHandle<MeshVertexIndex>();
+                var subMeshBufferType = GetBufferTypeHandle<SubMeshInfo>();
 
-                var entityType = GetArchetypeChunkEntityType();
+                var entityType = GetEntityTypeHandle();
 
 
                 for (int i = 0; i < chunkArray.Length; i++)
@@ -217,7 +217,7 @@ namespace DotsUI.Hybrid
             {
                 var meshType = GetArchetypeChunkSharedComponentType<CanvasMeshContainer>();
 
-                var vertexBufferType = GetArchetypeChunkBufferType<MeshVertex>();
+                var vertexBufferType = GetBufferTypeHandle<MeshVertex>();
 
 
                 for (int i = 0; i < chunkArray.Length; i++)

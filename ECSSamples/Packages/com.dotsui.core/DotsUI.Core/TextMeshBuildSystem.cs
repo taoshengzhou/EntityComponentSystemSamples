@@ -38,25 +38,25 @@ namespace DotsUI.Core
         [BurstCompile(FloatMode = FloatMode.Fast)]
         private struct TextChunkBuilder : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType TextEntities;
-            [ReadOnly] public ArchetypeChunkComponentType<WorldSpaceRect> WorldSpaceRectType;
-            [ReadOnly] public ArchetypeChunkComponentType<VertexColorValue> ColorValueType;
-            [ReadOnly] public ArchetypeChunkComponentType<VertexColorMultiplier> ColorMultiplierType;
-            [ReadOnly] public ArchetypeChunkComponentType<TextRenderer> TextRendererType;
-            [ReadOnly] public ArchetypeChunkComponentType<ElementScale> ElementScaleType;
-            [ReadOnly] public ArchetypeChunkComponentType<WorldSpaceMask> WorldSpaceMaskType;
-            public ArchetypeChunkComponentType<RebuildElementMeshFlag> RebuildElementMeshFlagArray;
+            [ReadOnly] public EntityTypeHandle TextEntities;
+            [ReadOnly] public ComponentTypeHandle<WorldSpaceRect> WorldSpaceRectType;
+            [ReadOnly] public ComponentTypeHandle<VertexColorValue> ColorValueType;
+            [ReadOnly] public ComponentTypeHandle<VertexColorMultiplier> ColorMultiplierType;
+            [ReadOnly] public ComponentTypeHandle<TextRenderer> TextRendererType;
+            [ReadOnly] public ComponentTypeHandle<ElementScale> ElementScaleType;
+            [ReadOnly] public ComponentTypeHandle<WorldSpaceMask> WorldSpaceMaskType;
+            public ComponentTypeHandle<RebuildElementMeshFlag> RebuildElementMeshFlagArray;
 
             [ReadOnly] public ComponentDataFromEntity<TextFontAsset> FontAssetFromEntity;
             [ReadOnly] public BufferFromEntity<FontGlyphData> FontGlyphDataFromEntity;
 
             [NativeDisableContainerSafetyRestriction]
-            public ArchetypeChunkBufferType<ControlVertexData> VertexDataType;
+            public BufferTypeHandle<ControlVertexData> VertexDataType;
             [NativeDisableContainerSafetyRestriction]
-            public ArchetypeChunkBufferType<ControlVertexIndex> IndexDataType;
+            public BufferTypeHandle<ControlVertexIndex> IndexDataType;
 
             [ReadOnly]
-            public ArchetypeChunkBufferType<TextData> TextBufferType;
+            public BufferTypeHandle<TextData> TextBufferType;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {
@@ -228,19 +228,19 @@ namespace DotsUI.Core
         {
             TextChunkBuilder chunkJob = new TextChunkBuilder()
             {
-                TextEntities = GetArchetypeChunkEntityType(),
-                TextBufferType = GetArchetypeChunkBufferType<TextData>(true),
-                WorldSpaceRectType = GetArchetypeChunkComponentType<WorldSpaceRect>(true),
-                ColorValueType = GetArchetypeChunkComponentType<VertexColorValue>(true),
-                ColorMultiplierType = GetArchetypeChunkComponentType<VertexColorMultiplier>(true),
-                TextRendererType = GetArchetypeChunkComponentType<TextRenderer>(true),
-                VertexDataType = GetArchetypeChunkBufferType<ControlVertexData>(),
-                IndexDataType = GetArchetypeChunkBufferType<ControlVertexIndex>(),
-                RebuildElementMeshFlagArray = GetArchetypeChunkComponentType<RebuildElementMeshFlag>(),
+                TextEntities = GetEntityTypeHandle(),
+                TextBufferType = GetBufferTypeHandle<TextData>(true),
+                WorldSpaceRectType = GetComponentTypeHandle<WorldSpaceRect>(true),
+                ColorValueType = GetComponentTypeHandle<VertexColorValue>(true),
+                ColorMultiplierType = GetComponentTypeHandle<VertexColorMultiplier>(true),
+                TextRendererType = GetComponentTypeHandle<TextRenderer>(true),
+                VertexDataType = GetBufferTypeHandle<ControlVertexData>(),
+                IndexDataType = GetBufferTypeHandle<ControlVertexIndex>(),
+                RebuildElementMeshFlagArray = GetComponentTypeHandle<RebuildElementMeshFlag>(),
                 FontAssetFromEntity = GetComponentDataFromEntity<TextFontAsset>(true),
                 FontGlyphDataFromEntity = GetBufferFromEntity<FontGlyphData>(true),
-                ElementScaleType = GetArchetypeChunkComponentType<ElementScale>(true),
-                WorldSpaceMaskType = GetArchetypeChunkComponentType<WorldSpaceMask>(true)
+                ElementScaleType = GetComponentTypeHandle<ElementScale>(true),
+                WorldSpaceMaskType = GetComponentTypeHandle<WorldSpaceMask>(true)
             };
             //inputDeps = chunkJob.Schedule(chunkJob.TextEntities.Length, 1, inputDeps);
             inputDeps = chunkJob.Schedule(m_TextGroup, inputDeps);

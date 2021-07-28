@@ -101,8 +101,8 @@ namespace DotsUI.Controls
         {
             SliderInputJob sliderJob = new SliderInputJob()
             {
-                SliderComponentType = GetArchetypeChunkComponentType<Slider>(),
-                EntityType = GetArchetypeChunkEntityType(),
+                SliderComponentType = GetComponentTypeHandle<Slider>(),
+                EntityType = GetEntityTypeHandle(),
                 AddFlagCommandBuff = m_Barrier.CreateAddFlagComponentCommandBuffer<DirtyElementFlag>().AsParallelWriter(),
                 AddOnChangeFlagCommandBuff = m_Barrier.CreateAddFlagComponentCommandBuffer<SliderValueChangedEvent>().AsParallelWriter(),
                 TargetToEvent = targetToEvent,

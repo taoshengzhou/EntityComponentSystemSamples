@@ -84,15 +84,15 @@ namespace DotsUI.Core
         {
             SpriteBatchJob batchJob = new SpriteBatchJob()
             {
-                ColorValueType = GetArchetypeChunkComponentType<VertexColorValue>(true),
-                ColorMultiplierType = GetArchetypeChunkComponentType<VertexColorMultiplier>(true),
+                ColorValueType = GetComponentTypeHandle<VertexColorValue>(true),
+                ColorMultiplierType = GetComponentTypeHandle<VertexColorMultiplier>(true),
                 SpriteDataFromEntity = GetComponentDataFromEntity<SpriteVertexData>(),
-                SpriteImageType = GetArchetypeChunkComponentType<SpriteImage>(true),
-                VertexDataType = GetArchetypeChunkBufferType<ControlVertexData>(),
-                VertexIndexType = GetArchetypeChunkBufferType<ControlVertexIndex>(),
-                WorldSpaceRectType = GetArchetypeChunkComponentType<WorldSpaceRect>(true),
-                WorldSpaceMaskType = GetArchetypeChunkComponentType<WorldSpaceMask>(true),
-                RebuildElementMeshFlagType = GetArchetypeChunkComponentType<RebuildElementMeshFlag>()
+                SpriteImageType = GetComponentTypeHandle<SpriteImage>(true),
+                VertexDataType = GetBufferTypeHandle<ControlVertexData>(),
+                VertexIndexType = GetBufferTypeHandle<ControlVertexIndex>(),
+                WorldSpaceRectType = GetComponentTypeHandle<WorldSpaceRect>(true),
+                WorldSpaceMaskType = GetComponentTypeHandle<WorldSpaceMask>(true),
+                RebuildElementMeshFlagType = GetComponentTypeHandle<RebuildElementMeshFlag>()
             };
             inputDeps = batchJob.Schedule(m_SpriteGroup, inputDeps);
             return inputDeps;

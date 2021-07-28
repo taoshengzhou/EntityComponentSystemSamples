@@ -82,10 +82,10 @@ namespace DotsUI.Controls
             ScrollBarHandleJob scrollRectDragJob = new ScrollBarHandleJob()
             {
                 AddFlagCommandBuff = commandBuff.AsParallelWriter(),
-                EntityType = GetArchetypeChunkEntityType(),
+                EntityType = GetEntityTypeHandle(),
                 PointerBufferFromEntity = GetBufferFromEntity<PointerInputBuffer>(true),
                 ScrollBarFormEntity = GetComponentDataFromEntity<ScrollBar>(),
-                ScrollRectType = GetArchetypeChunkComponentType<ScrollRect>(true),
+                ScrollRectType = GetComponentTypeHandle<ScrollRect>(true),
                 TargetToEvent = targetToEvent
 
             };

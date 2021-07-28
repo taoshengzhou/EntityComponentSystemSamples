@@ -18,12 +18,12 @@ namespace DotsUI.Core
         {
             [ReadOnly]
             public float2 Dpi;
-            [ReadOnly] public ArchetypeChunkComponentType<RectTransform> RectTransformType;
-            [ReadOnly] public ArchetypeChunkComponentType<CanvasScreenSize> CanvasSizeType;
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkBufferType<Child> ChildType;
-            [ReadOnly] public ArchetypeChunkComponentType<CanvasConstantPhysicalSizeScaler> ConstantPhysicalScaler;
-            [ReadOnly] public ArchetypeChunkComponentType<CanvasConstantPixelSizeScaler> ConstantPixelScaler;
+            [ReadOnly] public ComponentTypeHandle<RectTransform> RectTransformType;
+            [ReadOnly] public ComponentTypeHandle<CanvasScreenSize> CanvasSizeType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public BufferTypeHandle<Child> ChildType;
+            [ReadOnly] public ComponentTypeHandle<CanvasConstantPhysicalSizeScaler> ConstantPhysicalScaler;
+            [ReadOnly] public ComponentTypeHandle<CanvasConstantPixelSizeScaler> ConstantPixelScaler;
             public HierarchyRebuildContext RebuildContext;
 
 
@@ -92,19 +92,19 @@ namespace DotsUI.Core
         }
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            var entityType = GetArchetypeChunkEntityType();
-            var childType = GetArchetypeChunkBufferType<Child>(true);
+            var entityType = GetEntityTypeHandle();
+            var childType = GetBufferTypeHandle<Child>(true);
 
             var dpi = ScreenUtils.GetScaledDpi();
             var updateHierarchyJob = new UpdateHierarchy
             {
                 Dpi = new float2(dpi, dpi),
-                RectTransformType = GetArchetypeChunkComponentType<RectTransform>(true),
-                CanvasSizeType = GetArchetypeChunkComponentType<CanvasScreenSize>(true),
+                RectTransformType = GetComponentTypeHandle<RectTransform>(true),
+                CanvasSizeType = GetComponentTypeHandle<CanvasScreenSize>(true),
                 EntityType = entityType,
                 ChildType = childType,
-                ConstantPhysicalScaler = GetArchetypeChunkComponentType<CanvasConstantPhysicalSizeScaler>(true),
-                ConstantPixelScaler = GetArchetypeChunkComponentType<CanvasConstantPixelSizeScaler>(true),
+                ConstantPhysicalScaler = GetComponentTypeHandle<CanvasConstantPhysicalSizeScaler>(true),
+                ConstantPixelScaler = GetComponentTypeHandle<CanvasConstantPixelSizeScaler>(true),
                 RebuildContext = HierarchyRebuildContext.Create(this)
 
             };

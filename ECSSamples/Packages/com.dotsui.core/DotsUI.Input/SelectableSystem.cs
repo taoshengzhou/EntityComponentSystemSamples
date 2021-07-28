@@ -118,9 +118,9 @@ namespace DotsUI.Input
         };
         protected override JobHandle OnUpdateInput(JobHandle inputDeps, NativeHashMap<Entity, Entity> targetToEvent, BufferFromEntity<PointerInputBuffer> pointerBufferFromEntity)
         {
-            var selectableColorType = GetArchetypeChunkComponentType<SelectableColor>(true);
-            var selectableType = GetArchetypeChunkComponentType<Selectable>();
-            var entityType = GetArchetypeChunkEntityType();
+            var selectableColorType = GetComponentTypeHandle<SelectableColor>(true);
+            var selectableType = GetComponentTypeHandle<Selectable>();
+            var entityType = GetEntityTypeHandle();
 
             NativeHashMap<Entity, int> updateQueue = new NativeHashMap<Entity, int>(m_SelectableGroup.CalculateEntityCount(), Allocator.TempJob);
             SetColorValueJob setJob = new SetColorValueJob()

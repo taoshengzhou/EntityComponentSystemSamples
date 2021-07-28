@@ -109,10 +109,10 @@ namespace DotsUI.Controls
         {
             UpdateSliderTransform updateJob = new UpdateSliderTransform()
             {
-                EntityType = GetArchetypeChunkEntityType(),
+                EntityType = GetEntityTypeHandle(),
                 RebuildContext = rebuildContext,
                 ParentFromEntity = GetComponentDataFromEntity<Parent>(true),
-                SliderType = GetArchetypeChunkComponentType<Slider>()
+                SliderType = GetComponentTypeHandle<Slider>()
             };
             inputDeps = updateJob.Schedule(m_SliderQuery, inputDeps);
             return inputDeps;

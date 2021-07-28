@@ -31,12 +31,12 @@ namespace DotsUI.Core
         {
             [NativeDisableContainerSafetyRestriction] public BufferFromEntity<MeshVertex> VertexFromCanvasEntity;
             [ReadOnly] public ComponentDataFromEntity<Parent> ParentFromEntity;
-            [NativeDisableContainerSafetyRestriction]public ArchetypeChunkBufferType<ControlVertexData> VertexDataType;
-            [ReadOnly] public ArchetypeChunkComponentType<ElementVertexPointerInMesh> VertexPointerInCanvasMeshType;
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<VertexColorValue> VertexColorType;
-            [ReadOnly] public ArchetypeChunkComponentType<VertexColorMultiplier> VertexColorMultiplierType;
-            [ReadOnly] public ArchetypeChunkComponentType<RebuildElementMeshFlag> RebuildElementMeshFlagType;
+            [NativeDisableContainerSafetyRestriction]public BufferTypeHandle<ControlVertexData> VertexDataType;
+            [ReadOnly] public ComponentTypeHandle<ElementVertexPointerInMesh> VertexPointerInCanvasMeshType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<VertexColorValue> VertexColorType;
+            [ReadOnly] public ComponentTypeHandle<VertexColorMultiplier> VertexColorMultiplierType;
+            [ReadOnly] public ComponentTypeHandle<RebuildElementMeshFlag> RebuildElementMeshFlagType;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {
@@ -83,14 +83,14 @@ namespace DotsUI.Core
         {
             UpdateColorVertices updateJob = new UpdateColorVertices()
             {
-                EntityType = GetArchetypeChunkEntityType(),
+                EntityType = GetEntityTypeHandle(),
                 ParentFromEntity = GetComponentDataFromEntity<Parent>(true),
-                VertexColorType = GetArchetypeChunkComponentType<VertexColorValue>(true),
-                VertexColorMultiplierType = GetArchetypeChunkComponentType<VertexColorMultiplier>(true),
-                VertexDataType = GetArchetypeChunkBufferType<ControlVertexData>(),
+                VertexColorType = GetComponentTypeHandle<VertexColorValue>(true),
+                VertexColorMultiplierType = GetComponentTypeHandle<VertexColorMultiplier>(true),
+                VertexDataType = GetBufferTypeHandle<ControlVertexData>(),
                 VertexFromCanvasEntity = GetBufferFromEntity<MeshVertex>(),
-                VertexPointerInCanvasMeshType = GetArchetypeChunkComponentType<ElementVertexPointerInMesh>(true),
-                RebuildElementMeshFlagType = GetArchetypeChunkComponentType<RebuildElementMeshFlag>(true)
+                VertexPointerInCanvasMeshType = GetComponentTypeHandle<ElementVertexPointerInMesh>(true),
+                RebuildElementMeshFlagType = GetComponentTypeHandle<RebuildElementMeshFlag>(true)
             };
             inputDeps = updateJob.Schedule(m_ColorUpdateQuery, inputDeps);
             return inputDeps;

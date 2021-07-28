@@ -85,8 +85,8 @@ namespace DotsUI.Controls
         {
             ScrollBarHandleJob scrollBarJob = new ScrollBarHandleJob()
             {
-                EntityType = GetArchetypeChunkEntityType(),
-                ScrollBarType = GetArchetypeChunkComponentType<ScrollBar>(),
+                EntityType = GetEntityTypeHandle(),
+                ScrollBarType = GetComponentTypeHandle<ScrollBar>(),
                 TargetToEvent = targetToEvent,
                 PointerBufferFromEntity = pointerBufferFromEntity,
                 ScrollRectFromEntity = GetComponentDataFromEntity<ScrollRect>(true),

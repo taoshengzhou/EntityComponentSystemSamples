@@ -289,20 +289,20 @@ namespace DotsUI.Controls
             {
                 m_TargetToKeyboardEvent.Clear();
                 m_TargetToPointerEvent.Clear();
-                var entityType = GetArchetypeChunkEntityType();
+                var entityType = GetEntityTypeHandle();
                 using(new Profiling.ProfilerSample("ScheduleJobs"))
                 {
                     CreateTargetToKeyboardEvent createTargetToKeyboardEvent = new CreateTargetToKeyboardEvent()
                     {
                         EntityType = entityType,
-                        KbdEventType = GetArchetypeChunkComponentType<KeyboardEvent>(true),
+                        KbdEventType = GetComponentTypeHandle<KeyboardEvent>(true),
                         TargetToEvent = m_TargetToKeyboardEvent.AsParallelWriter()
                     };
                     inputDeps = createTargetToKeyboardEvent.Schedule(m_KeyboardEventGroup, inputDeps);
                     CreateTargetToPointerEvent createTargetToPointerEvent = new CreateTargetToPointerEvent()
                     {
                         EntityType = entityType,
-                        PointerEventType = GetArchetypeChunkComponentType<PointerEvent>(true),
+                        PointerEventType = GetComponentTypeHandle<PointerEvent>(true),
                         TargetToEvent = m_TargetToPointerEvent.AsParallelWriter()
                     };
                     inputDeps = createTargetToPointerEvent.Schedule(m_PointerEventGroup, inputDeps);
@@ -312,8 +312,8 @@ namespace DotsUI.Controls
                         PointerInputBufferFromEntity = GetBufferFromEntity<PointerInputBuffer>(true),
                         InputFieldCaretLinkFromEntity = GetComponentDataFromEntity<InputFieldCaretEntityLink>(true),
                         EntityType = entityType,
-                        CaretStateType = GetArchetypeChunkComponentType<InputFieldCaretState>(),
-                        InputFieldType = GetArchetypeChunkComponentType<InputField>(),
+                        CaretStateType = GetComponentTypeHandle<InputFieldCaretState>(),
+                        InputFieldType = GetComponentTypeHandle<InputField>(),
                         TextDataFromEntity = GetBufferFromEntity<TextData>(),
                         TargetToKeyboardEvent = m_TargetToKeyboardEvent,
                         TargetToPointerEvent = m_TargetToPointerEvent,

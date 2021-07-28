@@ -17,7 +17,7 @@ namespace DotsUI.Hybrid
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             ArchetypeChunkSharedComponentType<SpriteAsset> assetType = GetArchetypeChunkSharedComponentType<SpriteAsset>();
-            ArchetypeChunkComponentType<SpriteVertexData> spriteDataType = GetArchetypeChunkComponentType<SpriteVertexData>();
+            ArchetypeChunkComponentType<SpriteVertexData> spriteDataType = GetComponentTypeHandle<SpriteVertexData>();
             using (var chunkArray = m_SpriteAssetGroup.CreateArchetypeChunkArray(Unity.Collections.Allocator.TempJob))
             {
                 foreach (var chunk in chunkArray)

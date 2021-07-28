@@ -67,8 +67,8 @@ namespace DotsUI.Controls
             var commandBuff = m_Barrier.CreateAddFlagComponentCommandBuffer<ButtonClickedEvent>();
             ProcessClicks clicksJob = new ProcessClicks
             {
-                BufferType = GetArchetypeChunkBufferType<PointerInputBuffer>(),
-                EventType = GetArchetypeChunkComponentType<PointerEvent>(),
+                BufferType = GetBufferTypeHandle<PointerInputBuffer>(),
+                EventType = GetComponentTypeHandle<PointerEvent>(),
                 ButtonTargetType = GetComponentDataFromEntity<Button>(),
                 ClickedButtons = commandBuff.AsParallelWriter()
             };

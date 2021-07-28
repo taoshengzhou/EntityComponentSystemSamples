@@ -38,8 +38,8 @@ namespace DotsUI.Hybrid
             {
                 using (var chunkArray = m_UpdateSizeGroup.CreateArchetypeChunkArray(Allocator.TempJob))
                 {
-                    var sizeType = GetArchetypeChunkComponentType<CanvasScreenSize>();
-                    var entityType = GetArchetypeChunkEntityType();
+                    var sizeType = GetComponentTypeHandle<CanvasScreenSize>();
+                    var entityType = GetEntityTypeHandle();
                     NativeQueue<Entity> commandBuffer = new NativeQueue<Entity>(Allocator.Temp);
                     foreach (var chunk in chunkArray)
                     {

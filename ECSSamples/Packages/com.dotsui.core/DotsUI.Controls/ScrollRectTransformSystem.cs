@@ -203,8 +203,8 @@ namespace DotsUI.Controls
         {
             UpdateScrollRectData updateJob = new UpdateScrollRectData()
             {
-                EntityType = GetArchetypeChunkEntityType(),
-                ScrollRectType = GetArchetypeChunkComponentType<ScrollRect>(),
+                EntityType = GetEntityTypeHandle(),
+                ScrollRectType = GetComponentTypeHandle<ScrollRect>(),
 
                 WorldSpaceRectFromEntity = GetComponentDataFromEntity<WorldSpaceRect>(),
                 RectTransformFromEntity = GetComponentDataFromEntity<RectTransform>(),
