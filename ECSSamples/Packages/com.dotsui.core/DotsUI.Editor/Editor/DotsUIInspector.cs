@@ -40,20 +40,20 @@ public class DotsUIInspector : EditorWindow
         m_ListView.bindItem = (e, i) => ((Label)e).text = m_Roots[i].Item1;
         m_ListView.itemHeight = 20; // Just an arbitrary value for now
         m_ListView.itemsSource = m_Roots;
-        m_ListView.onSelectionChanged += OnCanvasSelected;
+        m_ListView.onSelectionChange += OnCanvasSelected;
 
         m_MeshProperties = ui.Q<Foldout>("MeshProperties");
     }
 
     private void Update()
     {
-        if (World.Active != null)
+        if (World.DefaultGameObjectInjectionWorld != null)
             UpdateEntities();
     }
 
     void UpdateEntities()
     {
-        EntityManager entityManager = World.Active.EntityManager;
+        EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         var rootQuery = entityManager.CreateEntityQuery(new EntityQueryDesc
         {
             All = new ComponentType[]
@@ -86,12 +86,12 @@ public class DotsUIInspector : EditorWindow
         }
     }
 
-    private void OnCanvasSelected(System.Collections.Generic.List<object> obj)
+    private void OnCanvasSelected(System.Collections.Generic.IEnumerable<object> obj)
     {
-        var item = ((string, Entity)) obj[0];
-        m_MeshProperties.contentContainer.Clear();
-        var meshContainer = World.Active.EntityManager.GetSharedComponentData<CanvasMeshContainer>(item.Item2);
-        m_MeshProperties.contentContainer.Add(new Label($"Vertices: {meshContainer.UnityMesh.vertexCount}"));
-        m_MeshProperties.contentContainer.Add(new Label($"SubMeshes: {meshContainer.UnityMesh.subMeshCount}"));
+        // var item = ((string, Entity)) obj[0];
+        // m_MeshProperties.contentContainer.Clear();
+        // var meshContainer = World.DefaultGameObjectInjectionWorld.EntityManager.GetSharedComponentData<CanvasMeshContainer>(item.Item2);
+        // m_MeshProperties.contentContainer.Add(new Label($"Vertices: {meshContainer.UnityMesh.vertexCount}"));
+        // m_MeshProperties.contentContainer.Add(new Label($"SubMeshes: {meshContainer.UnityMesh.subMeshCount}"));
     }
 }

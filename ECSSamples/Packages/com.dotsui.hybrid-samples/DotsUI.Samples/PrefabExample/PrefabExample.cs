@@ -12,17 +12,17 @@ public class PrefabExample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (World.Active == null)
+        if (World.DefaultGameObjectInjectionWorld == null)
             DefaultWorldInitialization.Initialize("UI World", false);
-        //var entityManager = World.Active.EntityManager;
+        //var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        World.Active.GetOrCreateSystem<UserInputSystemGroup>().AddSystemToUpdateList(World.Active.GetOrCreateSystem<InstantiationSystem>());
-        World.Active.GetOrCreateSystem<UserInputSystemGroup>().AddSystemToUpdateList(World.Active.GetOrCreateSystem<CloseButtonSystem>());
+        World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UserInputSystemGroup>().AddSystemToUpdateList(World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<InstantiationSystem>());
+        World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<UserInputSystemGroup>().AddSystemToUpdateList(World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<CloseButtonSystem>());
 
         //RectTransformToEntity transformToEntity = new RectTransformToEntity(100, Allocator.Temp);
-        //RectTransformConversionUtils.ConvertCanvasHierarchy(m_TopCanvas, World.Active.EntityManager, transformToEntity);
-        //RectTransformConversionUtils.ConvertCanvasHierarchy(m_RightCanvas, World.Active.EntityManager, transformToEntity);
-        //RectTransformConversionUtils.ConvertCanvasHierarchy(m_PrefabDestination, World.Active.EntityManager, transformToEntity);
+        //RectTransformConversionUtils.ConvertCanvasHierarchy(m_TopCanvas, World.DefaultGameObjectInjectionWorld.EntityManager, transformToEntity);
+        //RectTransformConversionUtils.ConvertCanvasHierarchy(m_RightCanvas, World.DefaultGameObjectInjectionWorld.EntityManager, transformToEntity);
+        //RectTransformConversionUtils.ConvertCanvasHierarchy(m_PrefabDestination, World.DefaultGameObjectInjectionWorld.EntityManager, transformToEntity);
 
         //GameObject.Destroy(m_TopCanvas.gameObject);
         //GameObject.Destroy(m_RightCanvas.gameObject);
