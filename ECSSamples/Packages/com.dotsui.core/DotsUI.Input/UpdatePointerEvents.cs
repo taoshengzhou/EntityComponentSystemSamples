@@ -190,7 +190,7 @@ namespace DotsUI.Input
         {
             if (state.HoveredEntity != mouseHit)
             {
-                if (ReceiverFromEntity.Exists(state.HoveredEntity))
+                if (ReceiverFromEntity.HasComponent(state.HoveredEntity))
                     CreateEvent(state.HoveredEntity, PointerEventType.Exit, true,
                         PointerButton.Invalid);
                 if (mouseHit != default)
@@ -201,7 +201,7 @@ namespace DotsUI.Input
 
         private void CreateEvent(Entity target, PointerEventType type, bool propagateParent, PointerButton button)
         {
-            if (ReceiverFromEntity.Exists(target) && (ReceiverFromEntity[target].ListenerTypes & type) == type)
+            if (ReceiverFromEntity.HasComponent(target) && (ReceiverFromEntity[target].ListenerTypes & type) == type)
             {
                 PointerEventData eventData = new PointerEventData()
                 {
@@ -234,7 +234,7 @@ namespace DotsUI.Input
 
             while (parent != default)
             {
-                if (!ReceiverFromEntity.Exists(parent))
+                if (!ReceiverFromEntity.HasComponent(parent))
                 {
                     parent = GetParent(parent);
                 }
@@ -274,7 +274,7 @@ namespace DotsUI.Input
 
         private Entity GetParent(Entity target)
         {
-            if (ParentFromEntity.Exists(target))
+            if (ParentFromEntity.HasComponent(target))
                 return ParentFromEntity[target].Value;
             return default;
         }

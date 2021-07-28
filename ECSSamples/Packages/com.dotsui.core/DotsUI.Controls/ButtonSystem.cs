@@ -34,8 +34,8 @@ namespace DotsUI.Controls
         [BurstCompile]
         private struct ProcessClicks : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkComponentType<PointerEvent> EventType;
-            [ReadOnly] public ArchetypeChunkBufferType<PointerInputBuffer> BufferType;
+            [ReadOnly] public ComponentTypeHandle<PointerEvent> EventType;
+            [ReadOnly] public BufferTypeHandle<PointerInputBuffer> BufferType;
 
             [WriteOnly] public AddFlagComponentCommandBuffer.ParallelWriter ClickedButtons;
             [ReadOnly] public ComponentDataFromEntity<Button> ButtonTargetType;
@@ -46,7 +46,7 @@ namespace DotsUI.Controls
                 var bufferAccessor = chunk.GetBufferAccessor(BufferType);
                 for (int i = 0; i < chunk.Count; i++)
                 {
-                    if (ButtonTargetType.Exists(eventArray[i].Target))
+                    if (ButtonTargetType.HasComponent(eventArray[i].Target))
                     {
                         var buff = bufferAccessor[i];
                         for (int j = 0; j < buff.Length; j++)

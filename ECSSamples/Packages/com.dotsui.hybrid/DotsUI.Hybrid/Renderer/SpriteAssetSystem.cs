@@ -16,8 +16,8 @@ namespace DotsUI.Hybrid
         EntityQuery m_SpriteAssetGroup;
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            ArchetypeChunkSharedComponentType<SpriteAsset> assetType = GetArchetypeChunkSharedComponentType<SpriteAsset>();
-            ArchetypeChunkComponentType<SpriteVertexData> spriteDataType = GetComponentTypeHandle<SpriteVertexData>();
+            SharedComponentTypeHandle<SpriteAsset> assetType = GetSharedComponentTypeHandle<SpriteAsset>();
+            ComponentTypeHandle<SpriteVertexData> spriteDataType = GetComponentTypeHandle<SpriteVertexData>();
             using (var chunkArray = m_SpriteAssetGroup.CreateArchetypeChunkArray(Unity.Collections.Allocator.TempJob))
             {
                 foreach (var chunk in chunkArray)

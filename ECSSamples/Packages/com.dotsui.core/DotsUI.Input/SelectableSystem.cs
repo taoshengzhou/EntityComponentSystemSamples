@@ -38,9 +38,9 @@ namespace DotsUI.Input
         [BurstCompile]
         struct SetColorValueJob : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkComponentType<SelectableColor> SelectableColorType;
-            public ArchetypeChunkComponentType<Selectable> SelectableType;
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
+            [ReadOnly] public ComponentTypeHandle<SelectableColor> SelectableColorType;
+            public ComponentTypeHandle<Selectable> SelectableType;
+            [ReadOnly] public EntityTypeHandle EntityType;
             [ReadOnly] public BufferFromEntity<PointerInputBuffer> PointerInputType;
             [ReadOnly] public NativeHashMap<Entity, Entity> TargetToEvent;
 
@@ -80,7 +80,7 @@ namespace DotsUI.Input
                     }
 
                     var target = selectableColorArray[i].Target;
-                    if (ColorMultiplierFromEntity.Exists(target))
+                    if (ColorMultiplierFromEntity.HasComponent(target))
                     {
                         var currentColor = ColorMultiplierFromEntity[target].Value;
                         float4 newColor = currentColor;

@@ -23,7 +23,7 @@ namespace DotsUI.Core
                     ComponentType.ReadOnly<RebuildElementMeshFlag>(), 
                 }
             });
-            m_SpriteGroup.SetFilterChanged(typeof(RebuildElementMeshFlag));
+            m_SpriteGroup.SetChangedVersionFilter(typeof(RebuildElementMeshFlag));
         }
 
         [BurstCompile]
@@ -64,7 +64,7 @@ namespace DotsUI.Core
                         triangles.Clear();
 
                         var worldSpaceRect = worldSpaceRects[i];
-                        if (SpriteDataFromEntity.Exists(assetEntity))
+                        if (SpriteDataFromEntity.HasComponent(assetEntity))
                         {
                             var spriteData = SpriteDataFromEntity[assetEntity];
                             // TODO: Simple sprite (non sliced)

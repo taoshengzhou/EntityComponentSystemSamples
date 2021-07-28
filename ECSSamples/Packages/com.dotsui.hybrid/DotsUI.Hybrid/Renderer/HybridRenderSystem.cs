@@ -179,8 +179,8 @@ namespace DotsUI.Hybrid
         {
             using (var chunkArray = m_UpdateMeshAndCommandBufferGroup.CreateArchetypeChunkArray(Allocator.TempJob))
             {
-                var commandBufferType = GetArchetypeChunkSharedComponentType<CanvasCommandBufferContainer>();
-                var meshType = GetArchetypeChunkSharedComponentType<CanvasMeshContainer>();
+                var commandBufferType = GetSharedComponentTypeHandle<CanvasCommandBufferContainer>();
+                var meshType = GetSharedComponentTypeHandle<CanvasMeshContainer>();
 
                 var vertexBufferType = GetBufferTypeHandle<MeshVertex>();
                 var vertexIndexBufferType = GetBufferTypeHandle<MeshVertexIndex>();
@@ -215,7 +215,7 @@ namespace DotsUI.Hybrid
         {
             using (var chunkArray = m_UpdateVerticesOnlyGroup.CreateArchetypeChunkArray(Allocator.TempJob))
             {
-                var meshType = GetArchetypeChunkSharedComponentType<CanvasMeshContainer>();
+                var meshType = GetSharedComponentTypeHandle<CanvasMeshContainer>();
 
                 var vertexBufferType = GetBufferTypeHandle<MeshVertex>();
 

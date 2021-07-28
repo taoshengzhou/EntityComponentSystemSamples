@@ -25,8 +25,8 @@ namespace DotsUI.Controls
         [BurstCompile]
         struct ScrollBarHandleJob : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<ScrollRect> ScrollRectType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<ScrollRect> ScrollRectType;
             [NativeDisableParallelForRestriction] public ComponentDataFromEntity<ScrollBar> ScrollBarFormEntity;
             [ReadOnly] public NativeHashMap<Entity, Entity> TargetToEvent;
             [ReadOnly] public BufferFromEntity<PointerInputBuffer> PointerBufferFromEntity;

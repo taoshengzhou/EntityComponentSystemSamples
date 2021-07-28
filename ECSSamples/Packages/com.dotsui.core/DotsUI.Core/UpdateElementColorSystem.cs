@@ -72,7 +72,7 @@ namespace DotsUI.Core
 
             public Entity GetRootRecursive(Entity entity)
             {
-                if (ParentFromEntity.Exists(entity))
+                if (ParentFromEntity.HasComponent(entity))
                     return GetRootRecursive(ParentFromEntity[entity].Value);
                 return entity;
             }

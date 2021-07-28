@@ -27,8 +27,8 @@ namespace DotsUI.Input
         [BurstCompile]
         struct CreateTargetToEventMap : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<PointerEvent> EventType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<PointerEvent> EventType;
             [ReadOnly] public ComponentDataFromEntity<T> TargetType;
             [WriteOnly] public NativeHashMap<Entity, Entity>.ParallelWriter TargetToEvent;
 
@@ -38,7 +38,7 @@ namespace DotsUI.Input
                 var eventArray = chunk.GetNativeArray(EventType);
                 for (int i = 0; i < chunk.Count; i++)
                 {
-                    if (TargetType.Exists(eventArray[i].Target))
+                    if (TargetType.HasComponent(eventArray[i].Target))
                         TargetToEvent.TryAdd(eventArray[i].Target, entityArray[i]);
                 }
             }

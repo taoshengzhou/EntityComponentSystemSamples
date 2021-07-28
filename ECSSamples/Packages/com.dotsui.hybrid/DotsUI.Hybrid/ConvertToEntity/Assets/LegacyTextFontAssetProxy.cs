@@ -3,6 +3,6 @@ using Unity.Entities;
 
 namespace DotsUI.Core
 {
-	[Serializable]
-	class LegacyTextFontAssetProxy : SharedComponentDataProxy<LegacyTextFontAsset> { }
+	// [Serializable]
+	// class LegacyTextFontAssetProxy : SharedComponentDataProxy<LegacyTextFontAsset> { }
 }

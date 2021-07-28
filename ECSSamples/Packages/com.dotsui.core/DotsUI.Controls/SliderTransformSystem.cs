@@ -17,15 +17,15 @@ namespace DotsUI.Controls
         protected override void OnCreate()
         {
             m_SliderQuery = GetEntityQuery(ComponentType.ReadOnly<Slider>(), ComponentType.ReadWrite<WorldSpaceRect>());
-            m_SliderQuery.SetFilterChanged(typeof(Slider));
+            m_SliderQuery.SetChangedVersionFilter(typeof(Slider));
             RequireForUpdate(m_SliderQuery);
         }
 
         [BurstCompile]
         struct UpdateSliderTransform : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<Slider> SliderType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<Slider> SliderType;
             [ReadOnly] public ComponentDataFromEntity<Parent> ParentFromEntity;
 
             public HierarchyRebuildContext RebuildContext;
@@ -88,7 +88,7 @@ namespace DotsUI.Controls
 
             private bool IsValidRect(Entity rectEntity)
             {
-                if (!ParentFromEntity.Exists(rectEntity))
+                if (!ParentFromEntity.HasComponent(rectEntity))
                     return false;
                 var fillParent = ParentFromEntity[rectEntity].Value;
                 if (fillParent == Entity.Null) // Is this check necessary?

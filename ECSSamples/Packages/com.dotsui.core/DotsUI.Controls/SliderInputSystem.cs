@@ -20,8 +20,8 @@ namespace DotsUI.Controls
         [BurstCompile]
         struct SliderInputJob : IJobChunk
         {
-            public ArchetypeChunkComponentType<Slider> SliderComponentType;
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
+            public ComponentTypeHandle<Slider> SliderComponentType;
+            [ReadOnly] public EntityTypeHandle EntityType;
             public AddFlagComponentCommandBuffer.ParallelWriter AddFlagCommandBuff;
             public AddFlagComponentCommandBuffer.ParallelWriter AddOnChangeFlagCommandBuff;
             [ReadOnly] public NativeHashMap<Entity, Entity> TargetToEvent;
@@ -65,7 +65,7 @@ namespace DotsUI.Controls
 
             private WorldSpaceRect GetSliderInputRect(ref Slider slider)
             {
-                if (slider.HandleRect != Entity.Null && ParentFromEntity.Exists(slider.HandleRect))
+                if (slider.HandleRect != Entity.Null && ParentFromEntity.HasComponent(slider.HandleRect))
                     return WorldSpaceRectFromEntity[ParentFromEntity[slider.HandleRect].Value];
                 return WorldSpaceRectFromEntity[ParentFromEntity[slider.FillRect].Value];
             }

@@ -245,7 +245,7 @@ namespace DotsUI.Core
 
                         for (int j = 0; j < entityArray.Length; j++)
                         {
-                            if (FontAssetFromEntity.Exists(textArray[j].Font))
+                            if (FontAssetFromEntity.HasComponent(textArray[j].Font))
                                 materialId = FontAssetFromEntity[textArray[j].Font].NativeMaterialId;
                             else
                                 materialId = -1;

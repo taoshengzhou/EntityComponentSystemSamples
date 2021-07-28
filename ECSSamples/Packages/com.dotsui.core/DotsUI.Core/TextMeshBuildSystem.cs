@@ -97,8 +97,8 @@ namespace DotsUI.Core
 
             private void PopulateMesh(WorldSpaceRect rect, ElementScale scale, WorldSpaceMask mask, TextRenderer settings, float4 color, ref DynamicBuffer<TextData> textBuffer, ref DynamicBuffer<ControlVertexData> vertices, ref DynamicBuffer<ControlVertexIndex> triangles)
             {
-                _VerticalAlignmentOptions verticalAlignment = (_VerticalAlignmentOptions)settings.Alignment;
-                _HorizontalAlignmentOptions horizontalAlignment = (_HorizontalAlignmentOptions)settings.Alignment;
+                TextAlignmentOptions verticalAlignment = (TextAlignmentOptions)settings.Alignment;
+                TextAlignmentOptions horizontalAlignment = (TextAlignmentOptions)settings.Alignment;
 
                 var font = FontAssetFromEntity[settings.Font];
                 var glyphData = FontGlyphDataFromEntity[settings.Font];

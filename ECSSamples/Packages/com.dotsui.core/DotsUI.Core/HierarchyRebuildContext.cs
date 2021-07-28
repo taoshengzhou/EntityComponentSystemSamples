@@ -48,7 +48,7 @@ namespace DotsUI.Core
 
         public void UpdateTransformRecursive(ref WorldSpaceRect parentLocalToWorldSpaceRect, WorldSpaceMask currentMask, Entity entity, float2 scale)
         {
-            if (DisabledFromEntity.Exists(entity))
+            if (DisabledFromEntity.HasComponent(entity))
                 return;
             var childTransform = RectTransformFromEntity[entity];
             var childLocalToWorld = RectTransformUtils.CalculateWorldSpaceRect(parentLocalToWorldSpaceRect, scale, childTransform);
@@ -57,12 +57,12 @@ namespace DotsUI.Core
             UpdateRectMask(entity, childLocalToWorld, ref currentMask);
             WorldSpaceMaskFromEntity[entity] = currentMask;
 
-            if (RebuildFlagFromEntity.Exists(entity))
+            if (RebuildFlagFromEntity.HasComponent(entity))
                 RebuildFlagFromEntity[entity] = new RebuildElementMeshFlag()
                 {
                     Rebuild = true
                 };
-            if (ChildrenFromEntity.Exists(entity))
+            if (ChildrenFromEntity.HasComponent(entity))
             {
                 var children = ChildrenFromEntity[entity];
                 for (int i = 0; i < children.Length; i++)
@@ -73,7 +73,7 @@ namespace DotsUI.Core
         }
         private void UpdateRectMask(Entity entity, WorldSpaceRect elementRect, ref WorldSpaceMask mask)
         {
-            if (RectMaskFromEntity.Exists(entity))
+            if (RectMaskFromEntity.HasComponent(entity))
             {
                 float2 newMin = math.max(mask.Min, elementRect.Min);
                 float2 newMax = math.min(mask.Max, elementRect.Max);

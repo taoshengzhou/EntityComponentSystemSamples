@@ -35,7 +35,7 @@ namespace DotsUI.Input
 
         private void GoDownHierarchyTree(Entity entity, int index)
         {
-            if (PointerInputReceiver.Exists(entity) && LocalToWorldFromEntity.Exists(entity))
+            if (PointerInputReceiver.HasComponent(entity) && LocalToWorldFromEntity.HasComponent(entity))
             {
                 var localToWorld = LocalToWorldFromEntity[entity];
 
@@ -46,7 +46,7 @@ namespace DotsUI.Input
                 }
             }
 
-            if (ChildrenFromEntity.Exists(entity))
+            if (ChildrenFromEntity.HasComponent(entity))
             {
                 var children = ChildrenFromEntity[entity];
                 for (int i = 0; i < children.Length; i++)

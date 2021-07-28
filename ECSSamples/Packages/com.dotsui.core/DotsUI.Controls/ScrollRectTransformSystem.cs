@@ -37,9 +37,9 @@ namespace DotsUI.Controls
         [BurstCompile]
         struct UpdateScrollRectData : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<ScrollRect> ScrollRectType;
-            //public ArchetypeChunkComponentType<ScrollRectData> ScrollRectData;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<ScrollRect> ScrollRectType;
+            //public ComponentTypeHandle<ScrollRectData> ScrollRectData;
 
             [NativeDisableParallelForRestriction] public ComponentDataFromEntity<WorldSpaceRect> WorldSpaceRectFromEntity;
             [NativeDisableParallelForRestriction] public ComponentDataFromEntity<RectTransform> RectTransformFromEntity;
@@ -83,13 +83,13 @@ namespace DotsUI.Controls
                     var contentToViewportRatio = transforms.ViewportRect.Size / transforms.ContentRect.Size;
 
                     var verticalEntity = scrollView.VerticalBar;
-                    if(ScrollBarFromEntity.Exists(verticalEntity))
+                    if(ScrollBarFromEntity.HasComponent(verticalEntity))
                     {
                         UpdateScrollBar(scrollView, verticalEntity, contentToViewportRatio, ref transforms, ScrollBarAxis.Vertical);
                     }
 
                     var horizontalEntity = scrollView.HorizontalBar;
-                    if (ScrollBarFromEntity.Exists(horizontalEntity))
+                    if (ScrollBarFromEntity.HasComponent(horizontalEntity))
                     {
                         UpdateScrollBar(scrollView, horizontalEntity, contentToViewportRatio, ref transforms, ScrollBarAxis.Horizontal);
                     }

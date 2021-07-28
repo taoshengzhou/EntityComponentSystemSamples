@@ -15,8 +15,8 @@ namespace DotsUI.Hybrid
         EntityQuery m_FontAssetGroup;
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            ArchetypeChunkSharedComponentType<LegacyTextFontAsset> materialType = GetArchetypeChunkSharedComponentType<LegacyTextFontAsset>();
-            ArchetypeChunkComponentType<TextFontAsset> fontType = GetComponentTypeHandle<TextFontAsset>();
+            SharedComponentTypeHandle<LegacyTextFontAsset> materialType = GetSharedComponentTypeHandle<LegacyTextFontAsset>();
+            ComponentTypeHandle<TextFontAsset> fontType = GetComponentTypeHandle<TextFontAsset>();
             using (var chunkArray = m_FontAssetGroup.CreateArchetypeChunkArray(Unity.Collections.Allocator.TempJob))
             {
                 foreach (var chunk in chunkArray)

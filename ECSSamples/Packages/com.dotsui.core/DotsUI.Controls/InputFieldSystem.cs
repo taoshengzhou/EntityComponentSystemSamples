@@ -62,7 +62,7 @@ namespace DotsUI.Controls
                     ComponentType.ReadWrite<InputFieldCaretState>()
                 }
             });
-            base.OnCreateManager();
+            base.OnCreate();
         }
 
         protected override void OnDestroy()
@@ -75,13 +75,13 @@ namespace DotsUI.Controls
             [ReadOnly] public BufferFromEntity<KeyboardInputBuffer> KeyboardInputBufferFromEntity;
             [ReadOnly] public BufferFromEntity<PointerInputBuffer> PointerInputBufferFromEntity;
             [ReadOnly] public ComponentDataFromEntity<InputFieldCaretEntityLink> InputFieldCaretLinkFromEntity;
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            public ArchetypeChunkComponentType<InputFieldCaretState> CaretStateType;
-            [ReadOnly] public ArchetypeChunkComponentType<InputField> InputFieldType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            public ComponentTypeHandle<InputFieldCaretState> CaretStateType;
+            [ReadOnly] public ComponentTypeHandle<InputField> InputFieldType;
             [ReadOnly] public NativeHashMap<Entity, Entity> TargetToKeyboardEvent;
             [ReadOnly] public NativeHashMap<Entity, Entity> TargetToPointerEvent;
             [WriteOnly] [NativeDisableParallelForRestriction] public BufferFromEntity<TextData> TextDataFromEntity;
-            public EntityCommandBuffer.Concurrent CommandBuff;
+            public EntityCommandBuffer.ParallelWriter CommandBuff;
 
             public EntityArchetype CaretArchetype;
 
@@ -153,7 +153,7 @@ namespace DotsUI.Controls
                     if (pointerEvent.EventType == PointerEventType.Deselected)
                     {
                         CommandBuff.AddComponent(chunkIdx, inputFieldEntity, new InputFieldEndEditEvent());
-                        if (InputFieldCaretLinkFromEntity.Exists(inputFieldEntity))
+                        if (InputFieldCaretLinkFromEntity.HasComponent(inputFieldEntity))
                         {
                             CommandBuff.DestroyEntity(chunkIdx, InputFieldCaretLinkFromEntity[inputFieldEntity].CaretEntity);
                             CommandBuff.RemoveComponent(chunkIdx, inputFieldEntity, typeof(InputFieldCaretEntityLink));
@@ -250,8 +250,8 @@ namespace DotsUI.Controls
         [BurstCompile]
         struct CreateTargetToKeyboardEvent : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<KeyboardEvent> KbdEventType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<KeyboardEvent> KbdEventType;
             [WriteOnly] public NativeHashMap<Entity, Entity>.ParallelWriter TargetToEvent;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
@@ -267,8 +267,8 @@ namespace DotsUI.Controls
         [BurstCompile]
         struct CreateTargetToPointerEvent : IJobChunk
         {
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
-            [ReadOnly] public ArchetypeChunkComponentType<PointerEvent> PointerEventType;
+            [ReadOnly] public EntityTypeHandle EntityType;
+            [ReadOnly] public ComponentTypeHandle<PointerEvent> PointerEventType;
             [WriteOnly] public NativeHashMap<Entity, Entity>.ParallelWriter TargetToEvent;
 
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
@@ -317,7 +317,7 @@ namespace DotsUI.Controls
                         TextDataFromEntity = GetBufferFromEntity<TextData>(),
                         TargetToKeyboardEvent = m_TargetToKeyboardEvent,
                         TargetToPointerEvent = m_TargetToPointerEvent,
-                        CommandBuff = m_InputSystemBarrier.CreateCommandBuffer().ToConcurrent(),
+                        CommandBuff = m_InputSystemBarrier.CreateCommandBuffer().AsParallelWriter(),
                         CaretArchetype = m_CaretArchetype
                     };
                     inputDeps = inputEventProcessor.Schedule(m_InputFieldGroup, inputDeps);

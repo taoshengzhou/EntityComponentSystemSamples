@@ -124,7 +124,7 @@ namespace DotsUI.Input
             EntityManager.CreateEntity(typeof(InputSystemState));
             EntityManager.CreateEntity(typeof(NativePointerInputContainer), typeof(NativePointerButtonEvent), typeof(NativePointerState));
             EntityManager.CreateEntity(typeof(NativeKeyboardInputContainer), typeof(NativeKeyboardInputEvent));
-            base.OnCreateManager();
+            base.OnCreate();
         }
 
         protected override void OnDestroy()
@@ -136,8 +136,7 @@ namespace DotsUI.Input
         {
             GatherEvents(Allocator.TempJob, out var pointerEvents, out var keyboardEvents);
             var pointerFrameData = GatherPointerFrameData(Allocator.TempJob);
-            NativeArray<Entity> roots = m_RootGroup.ToEntityArray(Allocator.TempJob, out var rootsDeps);
-            inputDeps = JobHandle.CombineDependencies(inputDeps, rootsDeps);
+            NativeArray<Entity> roots = m_RootGroup.ToEntityArray(Allocator.TempJob);
             var profilerSample = new ProfilerSample("PrepareBuffers");
             var childrenFromEntity = GetBufferFromEntity<Child>(true);
             var worldSpaceRectFromEntity = GetComponentDataFromEntity<WorldSpaceRect>(true);
